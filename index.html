@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a0b2e">
+  <title>A Magical Journey For Didi ✨🎂</title>
+
+  <!-- Playful & Storybook Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Grandstander:wght@600;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Floating Background Candies & Balloons -->
+  <div class="sky-particles" id="skyParticles"></div>
+
+  <!-- Persistent Floating Oggy Character (Walk/Dance at the Bottom) -->
+  <div class="oggy-companion-stage">
+    <img src="assets/photos/oggy1.gif" alt="Oggy Character" class="oggy-walker">
+  </div>
+
+  <!-- ================= PRELOADER ================= -->
+  <div id="loader">
+    <div class="loader-chibi">
+      <span class="magic-wand">🪄</span>
+      <div class="sparkle-orbit">✨</div>
+    </div>
+    <h2 class="loader-title">Cooking Up Something Magical...</h2>
+    <p class="loader-sub">Patience Didi, good things take a second! 🧁</p>
+  </div>
+
+  <!-- ================= MUSIC CONTROLLER ================= -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="assets/music/song.mp3" type="audio/mpeg">
+  </audio>
+
+  <button type="button" class="bubble-btn sound-bubble" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle Music">
+    <span id="musicIcon">🎵</span>
+    <span class="sound-wave"></span>
+  </button>
+
+  <!-- ================= 01. HERO SCREEN ================= -->
+  <section id="hero" class="screen active">
+    <div class="cloud-backdrop"></div>
+    
+    <div class="hero-card">
+      <!-- Oggy peeking on top of the hero card -->
+      <div class="oggy-card-peeker">
+        <img src="assets/photos/heart.gif" alt="Oggy Laughing" class="peeking-oggy">
+      </div>
+
+      <div class="badge-tag">👑 SPECIAL MISSION FOR DIDI</div>
+      <h1 class="bounce-title">
+        Hey Didi!
+        <span class="heart-pulse">💖</span>
+      </h1>
+      <p class="hero-desc">
+        Your annoying little brother built a tiny magical amusement park just for your special day. No skips allowed! 😜
+      </p>
+
+      <button type="button" class="btn-pop start-btn" onclick="startJourney()">
+        LET'S ENTER 🚀✨
+      </button>
+      <div class="hint-text">Turn on your speakers for best vibes 🎧</div>
+    </div>
+  </section>
+
+
+  <!-- ================= 02. ROAD TRIP (CAR JOURNEY) ================= -->
+  <section id="carSection" class="screen">
+    <div class="roadtrip-container">
+      <div class="trip-sign">
+        <span>📍 NEXT STOP: SMILESTOWN</span>
+      </div>
+
+      <h2 class="sub-heading">Hold Tight, Didi! 🚗💨</h2>
+      <p class="section-subtext">Buckle up, the driver has no license but 100% sister-love vibes.</p>
+
+      <div class="cartoon-track">
+        <div class="track-scenery">
+          <span class="tree t1">🌴</span>
+          <span class="tree t2">🌸</span>
+          <span class="tree t3">🍄</span>
+          <span class="tree t4">🏰</span>
+        </div>
+
+        <div class="road-asphalt">
+          <div class="stripe-line"></div>
+          <div class="cartoon-car-box" id="carBox">
+            <span class="smoke-puff p1">💨</span>
+            <span class="smoke-puff p2">💨</span>
+            <div class="chibi-car">
+              🚗💨
+              <!-- Cockroaches hitching a ride on the car -->
+              <img src="https://media.giphy.com/media/3o7TKMGpxx6D8b0sO4/giphy.gif" alt="Cockroach Riders" class="car-cockroaches">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dialogue-cloud" id="carText">
+        "Beep beep! Finding our core memories... 👀"
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================= 03. MEMORY SCRAPBOOK ================= -->
+  <section id="memories" class="screen">
+    <div class="scrapbook-wrap">
+      <div class="tape-strip"></div>
+      <span class="chapter-badge">CHAPTER 01</span>
+      <h2 class="sub-heading">The Vault of Shenanigans 📸</h2>
+      <p class="section-subtext">Proof that we survived each other this long.</p>
+
+      <div class="scrapbook-stage">
+        <button type="button" class="arrow-btn left" onclick="previousPhoto()" aria-label="Previous">◀</button>
+
+        <div class="polaroid-frame" id="polaroidCard">
+          <!-- Oggy sitting on the polaroid frame corner -->
+          <div class="oggy-on-frame">
+            <img src="assets/photos/happy.gif" alt="Oggy on Polaroid" class="frame-oggy-img">
+          </div>
+
+          <div class="polaroid-pin">📌</div>
+          <div class="polaroid-img-box">
+            <img id="memoryImage" src="assets/photos/01.jpg" alt="Memory Photo">
+          </div>
+          <div class="polaroid-caption">
+            <span class="polaroid-stamp" id="memoryNumber">POLAROID #01</span>
+            <p id="memoryCaption">One of those moments I'll never trade for anything.</p>
+          </div>
+        </div>
+
+        <button type="button" class="arrow-btn right" onclick="nextPhoto()" aria-label="Next">▶</button>
+      </div>
+
+      <div class="dots-pill" id="dots"></div>
+
+      <button type="button" class="btn-pop continue-btn" onclick="showVideo()">
+        Watch Moving Memories 🎬 →
+      </button>
+    </div>
+  </section>
+
+
+  <!-- ================= 04. CINEMA STAGE ================= -->
+  <section id="videoSection" class="screen">
+    <div class="tv-retro-wrapper">
+      <span class="chapter-badge">CHAPTER 02</span>
+      <h2 class="sub-heading">Home Video Reel 🍿</h2>
+      <p class="section-subtext">Some moments need audio & live chaos.</p>
+
+      <div class="retro-tv">
+        <div class="antenna a-left"></div>
+        <div class="antenna a-right"></div>
+        <div class="tv-screen">
+          <video id="memoryVideo" controls playsinline poster="assets/photos/01.jpg">
+            <source src="assets/videos/memory.mp4" type="video/mp4">
+            Your browser doesn't play this video!
+          </video>
+        </div>
+      </div>
+
+      <p class="screen-tip">Click play, turn volume up & laugh! ❤️</p>
+
+      <button type="button" class="btn-pop continue-btn" onclick="showLetter()">
+        Open Sealed Letter 💌 →
+      </button>
+    </div>
+  </section>
+
+
+  <!-- ================= 05. HANDMADE ENVELOPE ================= -->
+  <section id="letterSection" class="screen">
+    <div class="letter-container">
+      <span class="chapter-badge">CHAPTER 03</span>
+      <h2 class="sub-heading">A Letter From The Heart 💌</h2>
+      <p class="section-subtext">Tap the wax seal to unlock what's inside.</p>
+
+      <div class="magic-envelope-card" onclick="openLetter()">
+        <div class="envelope-art" id="mainEnvelope">
+          <div class="flap-top"></div>
+          <div class="wax-seal" id="waxSeal">❤️</div>
+          <div class="paper-sheet" id="paperSheet">
+            <div class="washi-tape"></div>
+            <div class="letter-body" id="letterText"></div>
+            <div class="letter-sign">— Forever your annoying bro 🧸</div>
+          </div>
+          <div class="envelope-pocket">
+            <span>TAP TO BREAK SEAL</span>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn-pop continue-btn hidden" id="letterNext" onclick="showThings()">
+        Next: Deep Dark Truths 🤫 →
+      </button>
+    </div>
+  </section>
+
+
+  <!-- ================= 06. FLIPPY TRUTH CARDS ================= -->
+  <section id="thingsSection" class="screen">
+    <div class="flip-section-wrap">
+      <span class="chapter-badge">CHAPTER 04</span>
+      <h2 class="sub-heading">Things I Rarely Admit 🤫</h2>
+      <p class="section-subtext">Tap each card to flip the secret!</p>
+
+      <div class="cards-grid">
+        <div class="sticker-card" onclick="flipCard(this)">
+          <div class="card-face front-face">
+            <span class="card-icon">💧</span>
+            <p>Reminder #01</p>
+          </div>
+          <div class="card-face back-face">
+            <p>Pani pee liya karo time pe! Pura din phone scroll karke dehydrated rehne ka competition nahi chal raha hai yahan. 😂 Hydrate yourself!</p>
+          </div>
+        </div>
+
+        <div class="sticker-card" onclick="flipCard(this)">
+          <div class="card-face front-face">
+            <span class="card-icon">🛌</span>
+            <p>Reminder #02</p>
+          </div>
+          <div class="card-face back-face">
+            <p>Raat ko time se soya karo. Pura din overthinking aur late-night jaagne se koi trophy nahi milti. Apna dhyan khud rakha karo thoda! 🫶</p>
+          </div>
+        </div>
+
+        <div class="sticker-card" onclick="flipCard(this)">
+          <div class="card-face front-face">
+            <span class="card-icon">🧠</span>
+            <p>Joke #03</p>
+          </div>
+          <div class="card-face back-face">
+            <p>I will still irritate you till our hair turns white. That is a permanent brother duty. 😜</p>
+          </div>
+        </div>
+
+        <div class="sticker-card" onclick="flipCard(this)">
+          <div class="card-face front-face">
+            <span class="card-icon">🍕</span>
+            <p>Rule #04</p>
+          </div>
+          <div class="card-face back-face">
+            <p>Time se khana khaya karo aur dieting ka natak band! Waise bhi birthday girl ko calories count karne ka koi haq nahi hai aaj. 🍰</p>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn-pop continue-btn" onclick="showMystery()">
+        Go To Mystery Boxes 🎁 →
+      </button>
+    </div>
+  </section>
+
+
+  <!-- ================= 07. MYSTERY CAPSULES ================= -->
+  <section id="mysterySection" class="screen">
+    <div class="mystery-wrap">
+      <span class="chapter-badge">BONUS ROOM</span>
+      <h2 class="sub-heading">Pick Your Lucky Mystery Box 🎁</h2>
+      <p class="section-subtext">Choose carefully... one of them might be a trick!</p>
+
+      <div class="gift-box-row">
+        <div class="capsule-box box-1" onclick="openGift(1)">
+          <div class="bounce-box">🎁</div>
+          <span class="box-tag">BOX A</span>
+        </div>
+        <div class="capsule-box box-2" onclick="openGift(2)">
+          <div class="bounce-box">🎀</div>
+          <span class="box-tag">BOX B</span>
+        </div>
+        <div class="capsule-box box-3" onclick="openGift(3)">
+          <div class="bounce-box">📦</div>
+          <span class="box-tag">DO NOT TAP</span>
+        </div>
+      </div>
+
+      <button type="button" class="btn-pop continue-btn" onclick="showFinal()">
+        Grand Birthday Finale 🎂 →
+      </button>
+    </div>
+  </section>
+
+
+  <!-- ================= 08. GRAND FINALE ================= -->
+  <section id="finalSection" class="screen">
+    <canvas id="stars">Canvas not supported</canvas>
+    
+    <div class="finale-envelope">
+      <div class="cake-container">
+        <div class="floating-cake">🎂</div>
+        <div class="candle-spark">✨</div>
+      </div>
+
+      <div class="finale-actions">
+        <button type="button" class="btn-pop celebration-btn" id="revealBtn" onclick="revealBirthday()">
+          BLOW THE CANDLES & MAKE A WISH! 🕯️✨
+        </button>
+      </div>
+
+      <div id="birthdayReveal" class="birthday-card-reveal">
+        <h1 class="party-heading">Happy Birthday, Didi! 🎉</h1>
+        <div class="bunting-line">🎈 🌸 🍬 🍰 💖 🧸</div>
+        
+        <p class="speech-bubble-text">
+          "Having a sister like you is like having a built-in best friend, lawyer, therapist, and ATM all in one person. Keep shining, stay happy, and never grow old at heart!"
+        </p>
+
+        <div class="forever-tag">
+          ❤️ Love you tons & tons, Didi! ❤️
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ================= POPUP MODAL ================= -->
+  <div id="popup" class="popup-backdrop">
+    <div class="chibi-modal">
+      <button type="button" class="modal-close" onclick="closePopup()" aria-label="Close">✕</button>
+      <div class="modal-badge-emoji" id="popupEmoji">🎁</div>
+      <p class="modal-msg" id="popupText"></p>
+      <button type="button" class="btn-pop modal-ok-btn" onclick="closePopup()">Aww, Okay! 🥰</button>
+    </div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti">Canvas not supported</canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>

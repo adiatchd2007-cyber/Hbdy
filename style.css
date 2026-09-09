@@ -1,0 +1,1075 @@
+/* =========================================
+   VARIABLES & THEME
+========================================= */
+:root {
+  --bg-deep: #160a2c;
+  --bg-gradient: radial-gradient(circle at 50% 20%, #2f144d 0%, #160a2c 75%);
+  --candy-pink: #ff6b9d;
+  --candy-yellow: #ffd166;
+  --candy-mint: #06d6a0;
+  --candy-blue: #4cc9f0;
+  --cream: #fffaf0;
+  --card-border: 4px solid #3d1b63;
+  --font-main: "Fredoka", sans-serif;
+  --font-display: "Grandstander", cursive;
+  --font-handwriting: "Caveat", cursive;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--bg-deep);
+  background-image: var(--bg-gradient);
+  color: #fff;
+  font-family: var(--font-main);
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Sky floating bubbles */
+.sky-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255, 107, 157, 0.08) 0%, transparent 20%),
+    radial-gradient(circle at 80% 80%, rgba(76, 201, 240, 0.08) 0%, transparent 25%);
+}
+
+/* =========================================
+   DYNAMIC OGGY & CHARACTER MOVEMENTS
+========================================= */
+
+/* 1. Walk/Dance across the bottom of the screen */
+.oggy-companion-stage {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.oggy-walker {
+  position: absolute;
+  bottom: 10px;
+  width: 90px;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
+  animation: oggyPatrol 18s linear infinite;
+}
+
+@keyframes oggyPatrol {
+  0% {
+    left: -110px;
+    transform: scaleX(1);
+  }
+  48% {
+    left: calc(100vw + 20px);
+    transform: scaleX(1);
+  }
+  50% {
+    left: calc(100vw + 20px);
+    transform: scaleX(-1);
+  }
+  98% {
+    left: -110px;
+    transform: scaleX(-1);
+  }
+  100% {
+    left: -110px;
+    transform: scaleX(1);
+  }
+}
+
+/* 2. Peeker on the top edge of Hero Card */
+.oggy-card-peeker {
+  position: absolute;
+  top: -65px;
+  right: 25px;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.peeking-oggy {
+  width: 95px;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.5));
+  animation: oggyPeek 3.5s ease-in-out infinite;
+}
+
+@keyframes oggyPeek {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(-6deg);
+  }
+}
+
+/* 3. Cockroaches riding on top of the Car */
+.car-cockroaches {
+  position: absolute;
+  top: -30px;
+  left: 10px;
+  width: 45px;
+  height: auto;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+  animation: cockroachBounce 0.4s infinite alternate ease-in-out;
+}
+
+@keyframes cockroachBounce {
+  from { transform: translateY(0) rotate(-3deg); }
+  to { transform: translateY(-6px) rotate(4deg); }
+}
+
+/* 4. Oggy sitting/hanging on Polaroid Frame */
+.oggy-on-frame {
+  position: absolute;
+  top: -45px;
+  right: -25px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.frame-oggy-img {
+  width: 75px;
+  height: auto;
+  filter: drop-shadow(0 5px 8px rgba(0,0,0,0.4));
+  animation: frameWiggle 3s ease-in-out infinite;
+}
+
+@keyframes frameWiggle {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg) scale(1.05); }
+}
+
+/* =========================================
+   PRELOADER
+========================================= */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #190a32;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.loader-chibi {
+  position: relative;
+  font-size: 70px;
+  animation: magicFloat 2s ease-in-out infinite;
+}
+
+.sparkle-orbit {
+  position: absolute;
+  top: -10px;
+  right: -15px;
+  font-size: 30px;
+  animation: spinSparkle 3s linear infinite;
+}
+
+.loader-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--candy-yellow);
+  margin-top: 20px;
+}
+
+.loader-sub {
+  color: #bfa3dc;
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+@keyframes magicFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(10deg); }
+}
+
+@keyframes spinSparkle {
+  from { transform: rotate(0deg) scale(0.8); }
+  50% { transform: rotate(180deg) scale(1.2); }
+  to { transform: rotate(360deg) scale(0.8); }
+}
+
+/* =========================================
+   SCREEN SYSTEM
+========================================= */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.92) translateY(20px);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow-y: auto;
+  z-index: 2;
+}
+
+.screen.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1) translateY(0);
+}
+
+/* =========================================
+   CARTOON BUTTONS & TYPOGRAPHY
+========================================= */
+.btn-pop {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  color: #1a0b2e;
+  background: var(--candy-yellow);
+  border: 3px solid #1a0b2e;
+  box-shadow: 0 6px 0 #1a0b2e;
+  padding: 14px 34px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-block;
+}
+
+.btn-pop:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 0 #1a0b2e;
+  background: #ffe07a;
+}
+
+.btn-pop:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #1a0b2e;
+}
+
+.sub-heading {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 42px);
+  color: #fff;
+  text-shadow: 2px 3px 0 #1a0b2e;
+  margin: 10px 0;
+}
+
+.section-subtext {
+  color: #d1bfe8;
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+.chapter-badge {
+  font-family: var(--font-display);
+  background: var(--candy-pink);
+  color: #fff;
+  border: 2px solid #1a0b2e;
+  box-shadow: 0 3px 0 #1a0b2e;
+  font-size: 12px;
+  letter-spacing: 2px;
+  padding: 4px 14px;
+  border-radius: 30px;
+  display: inline-block;
+}
+
+/* =========================================
+   MUSIC BUBBLE
+========================================= */
+.sound-bubble {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ff6b9d;
+  border: 3px solid #1a0b2e;
+  box-shadow: 0 4px 0 #1a0b2e;
+  font-size: 22px;
+  color: #fff;
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.sound-bubble:hover {
+  transform: scale(1.1) rotate(15deg);
+}
+
+/* =========================================
+   01. HERO
+========================================= */
+.hero-card {
+  background: rgba(39, 17, 72, 0.85);
+  border: 4px solid #5a2894;
+  border-radius: 32px;
+  padding: 45px 30px;
+  text-align: center;
+  max-width: 540px;
+  width: 100%;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.badge-tag {
+  background: #4cc9f0;
+  color: #1a0b2e;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 2px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  display: inline-block;
+  border: 2px solid #1a0b2e;
+  box-shadow: 0 3px 0 #1a0b2e;
+}
+
+.bounce-title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 8vw, 68px);
+  line-height: 1.1;
+  margin: 18px 0;
+  color: #fff;
+  text-shadow: 3px 4px 0 #1a0b2e;
+}
+
+.heart-pulse {
+  display: inline-block;
+  animation: heartBlink 1.3s ease infinite;
+}
+
+.hero-desc {
+  font-size: 17px;
+  line-height: 1.6;
+  color: #d1bfe8;
+  margin-bottom: 25px;
+}
+
+.hint-text {
+  font-size: 13px;
+  color: #9c7cb8;
+  margin-top: 15px;
+}
+
+@keyframes heartBlink {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3) rotate(8deg); }
+}
+
+/* =========================================
+   02. CAR SCREEN
+========================================= */
+.roadtrip-container {
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+}
+
+.trip-sign {
+  background: #ff5964;
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 12px;
+  border: 3px solid #1a0b2e;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 4px 0 #1a0b2e;
+  margin-bottom: 12px;
+}
+
+.cartoon-track {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  background: #391a61;
+  border: 4px solid #1a0b2e;
+  border-radius: 24px;
+  overflow: hidden;
+  margin: 25px 0;
+  box-shadow: inset 0 -8px 0 rgba(0,0,0,0.2);
+}
+
+.track-scenery {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  font-size: 32px;
+}
+
+.road-asphalt {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 75px;
+  background: #251040;
+  border-top: 4px solid #5a2894;
+}
+
+.stripe-line {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 6px;
+  background: repeating-linear-gradient(to right, #ffd166 0 40px, transparent 40px 80px);
+  transform: translateY(-50%);
+}
+
+.cartoon-car-box {
+  position: absolute;
+  left: -140px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.chibi-car {
+  position: relative;
+  font-size: 55px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+.smoke-puff {
+  font-size: 20px;
+  opacity: 0;
+  margin-right: -10px;
+}
+
+.cartoon-car-box.drive {
+  animation: driveThrough 4s cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+}
+
+.cartoon-car-box.drive .smoke-puff {
+  animation: puffSmoke 0.6s infinite ease-out;
+}
+
+@keyframes driveThrough {
+  0% { left: -140px; }
+  100% { left: calc(100% + 140px); }
+}
+
+@keyframes puffSmoke {
+  0% { opacity: 0; transform: scale(0.5) translateX(0); }
+  50% { opacity: 0.8; }
+  100% { opacity: 0; transform: scale(1.4) translateX(-25px); }
+}
+
+.dialogue-cloud {
+  background: #fff;
+  color: #1a0b2e;
+  font-weight: 700;
+  border: 3px solid #1a0b2e;
+  border-radius: 20px;
+  padding: 14px 24px;
+  display: inline-block;
+  box-shadow: 0 6px 0 #1a0b2e;
+  font-size: 16px;
+  position: relative;
+}
+
+/* =========================================
+   03. POLAROID SCRAPBOOK
+========================================= */
+.scrapbook-wrap {
+  text-align: center;
+  max-width: 650px;
+  width: 100%;
+}
+
+.scrapbook-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.polaroid-frame {
+  background: #fff;
+  padding: 16px 16px 24px 16px;
+  border-radius: 12px;
+  border: 4px solid #1a0b2e;
+  box-shadow: 0 12px 0 rgba(0,0,0,0.3), 0 20px 30px rgba(0,0,0,0.3);
+  width: min(80vw, 360px);
+  transform: rotate(-2deg);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.polaroid-frame:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.polaroid-pin {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 26px;
+}
+
+.polaroid-img-box {
+  width: 100%;
+  height: 320px;
+  background: #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #ddd;
+}
+
+.polaroid-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.polaroid-caption {
+  margin-top: 14px;
+  text-align: center;
+  color: #222;
+}
+
+.polaroid-stamp {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--candy-pink);
+  display: block;
+}
+
+.polaroid-caption p {
+  font-family: var(--font-handwriting);
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 6px;
+  line-height: 1.3;
+}
+
+.arrow-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--candy-mint);
+  border: 3px solid #1a0b2e;
+  box-shadow: 0 4px 0 #1a0b2e;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.arrow-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #1a0b2e;
+}
+
+.dots-pill {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 25px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #44226d;
+  border: 2px solid #1a0b2e;
+  cursor: pointer;
+}
+
+.dot.active {
+  background: var(--candy-yellow);
+  transform: scale(1.3);
+}
+
+/* =========================================
+   04. RETRO TV CINEMA
+========================================= */
+.tv-retro-wrapper {
+  text-align: center;
+  max-width: 680px;
+  width: 100%;
+}
+
+.retro-tv {
+  position: relative;
+  background: #ff6b9d;
+  border: 5px solid #1a0b2e;
+  border-radius: 35px;
+  padding: 22px;
+  box-shadow: 0 10px 0 #1a0b2e;
+  margin: 25px auto;
+  max-width: 580px;
+}
+
+.antenna {
+  position: absolute;
+  top: -24px;
+  width: 6px;
+  height: 30px;
+  background: #1a0b2e;
+  border-radius: 4px;
+}
+
+.antenna.a-left { left: 40%; transform: rotate(-30deg); }
+.antenna.a-right { right: 40%; transform: rotate(30deg); }
+
+.tv-screen {
+  background: #000;
+  border: 4px solid #1a0b2e;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.tv-screen video {
+  width: 100%;
+  max-height: 50vh;
+  display: block;
+}
+
+.screen-tip {
+  color: var(--candy-yellow);
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+/* =========================================
+   05. HANDMADE ENVELOPE
+========================================= */
+.letter-container {
+  text-align: center;
+  max-width: 560px;
+  width: 100%;
+}
+
+.magic-envelope-card {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  height: 380px;
+  margin: 20px auto 25px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.envelope-art {
+  width: 100%;
+  height: 100%;
+  background: #f7ede2;
+  border: 4px solid #1a0b2e;
+  border-radius: 20px;
+  box-shadow: 0 12px 0 #1a0b2e;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.wax-seal {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #e63946;
+  border: 3px solid #7d0f19;
+  box-shadow: 0 4px 0 #7d0f19;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  position: absolute;
+  z-index: 10;
+  transition: transform 0.4s ease;
+}
+
+.envelope-pocket {
+  position: absolute;
+  bottom: 18px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: #93664c;
+}
+
+.paper-sheet {
+  position: absolute;
+  inset: 15px;
+  background: #fffdf9;
+  border-radius: 12px;
+  border: 2px dashed #d6b89d;
+  padding: 24px;
+  text-align: left;
+  display: none;
+  overflow-y: auto;
+  z-index: 8;
+}
+
+.magic-envelope-card.opened .wax-seal {
+  transform: scale(0);
+}
+
+.magic-envelope-card.opened .paper-sheet {
+  display: block;
+}
+
+.magic-envelope-card.opened .envelope-pocket {
+  display: none;
+}
+
+.letter-body {
+  font-family: var(--font-handwriting);
+  font-size: 23px;
+  line-height: 1.5;
+  color: #2b1704;
+  white-space: pre-line;
+}
+
+.letter-sign {
+  font-family: var(--font-handwriting);
+  font-size: 25px;
+  font-weight: 700;
+  color: #ff3366;
+  margin-top: 15px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* =========================================
+   06. TRUTH FLIP CARDS
+========================================= */
+.flip-section-wrap {
+  text-align: center;
+  max-width: 640px;
+  width: 100%;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 20px 0 30px;
+}
+
+.sticker-card {
+  height: 170px;
+  perspective: 900px;
+  cursor: pointer;
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  border: 4px solid #1a0b2e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  backface-visibility: hidden;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.front-face {
+  background: #ffd166;
+  box-shadow: 0 6px 0 #1a0b2e;
+  color: #1a0b2e;
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+
+.front-face .card-icon {
+  font-size: 40px;
+  margin-bottom: 6px;
+}
+
+.back-face {
+  background: #fff;
+  color: #2b1704;
+  transform: rotateY(180deg);
+  box-shadow: 0 6px 0 #1a0b2e;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.sticker-card.flipped .front-face {
+  transform: rotateY(180deg);
+}
+
+.sticker-card.flipped .back-face {
+  transform: rotateY(0deg);
+}
+
+/* =========================================
+   07. MYSTERY CAPSULES
+========================================= */
+.mystery-wrap {
+  text-align: center;
+  max-width: 620px;
+  width: 100%;
+}
+
+.gift-box-row {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin: 35px 0;
+}
+
+.capsule-box {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.capsule-box:hover {
+  transform: translateY(-10px) scale(1.08);
+}
+
+.bounce-box {
+  font-size: 70px;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.3));
+  animation: gentleShake 2s infinite ease-in-out;
+}
+
+.box-2 .bounce-box { animation-delay: 0.3s; }
+.box-3 .bounce-box { animation-delay: 0.6s; }
+
+.box-tag {
+  display: inline-block;
+  margin-top: 10px;
+  background: #ff6b9d;
+  border: 2px solid #1a0b2e;
+  box-shadow: 0 3px 0 #1a0b2e;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+@keyframes gentleShake {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-6deg); }
+  75% { transform: rotate(6deg); }
+}
+
+/* =========================================
+   08. GRAND FINALE
+========================================= */
+#finalSection {
+  background: radial-gradient(circle at 50% 30%, #3d1566 0%, #160a2c 80%);
+}
+
+#stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.finale-envelope {
+  text-align: center;
+  max-width: 620px;
+  width: 100%;
+  z-index: 5;
+}
+
+.cake-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.floating-cake {
+  font-size: 100px;
+  animation: cakeHover 3s ease-in-out infinite;
+}
+
+@keyframes cakeHover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px) rotate(4deg); }
+}
+
+.birthday-card-reveal {
+  display: none;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1a0b2e;
+  border: 5px solid #1a0b2e;
+  border-radius: 30px;
+  padding: 30px 24px;
+  box-shadow: 0 15px 0 #1a0b2e, 0 30px 50px rgba(0,0,0,0.5);
+  animation: popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.birthday-card-reveal.show {
+  display: block;
+}
+
+.party-heading {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 6vw, 52px);
+  color: #ff3366;
+  text-shadow: 2px 2px 0 #ffd166;
+  margin-bottom: 8px;
+}
+
+.bunting-line {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.speech-bubble-text {
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: 600;
+  color: #3b2352;
+}
+
+.forever-tag {
+  margin-top: 22px;
+  font-family: var(--font-handwriting);
+  font-size: 32px;
+  color: #ff3366;
+  font-weight: 700;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.6) translateY(40px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* =========================================
+   POPUP MODAL
+========================================= */
+.popup-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 10, 44, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.popup-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.chibi-modal {
+  background: #fff;
+  color: #1a0b2e;
+  border: 4px solid #1a0b2e;
+  border-radius: 28px;
+  padding: 35px 25px;
+  max-width: 380px;
+  width: 90vw;
+  text-align: center;
+  box-shadow: 0 12px 0 #1a0b2e;
+  position: relative;
+  transform: scale(0.85);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.popup-backdrop.show .chibi-modal {
+  transform: scale(1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  border: none;
+  background: none;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.modal-badge-emoji {
+  font-size: 60px;
+}
+
+.modal-msg {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 16px 0 22px;
+  line-height: 1.5;
+  color: #3e1b69;
+}
+
+.modal-ok-btn {
+  padding: 10px 24px;
+  font-size: 16px;
+}
+
+/* =========================================
+   CANVAS CONFETTI
+========================================= */
+#confetti {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+========================================= */
+@media (max-width: 600px) {
+  .screen { padding: 16px; }
+  .hero-card { padding: 30px 18px; }
+  .polaroid-img-box { height: 260px; }
+  .cards-grid { grid-template-columns: 1fr; gap: 12px; }
+  .sticker-card { height: 130px; }
+  .gift-box-row { gap: 14px; }
+  .bounce-box { font-size: 55px; }
+
+  /* Mobile character sizing adjustments */
+  .oggy-walker {
+    width: 150px;
+    bottom: 25px;
+  }
+  .peeking-oggy {
+    width: 75px;
+    top: -50px;
+    right: 15px;
+  }
+  .oggy-on-frame {
+    top: -38px;
+    right: -10px;
+  }
+  .frame-oggy-img {
+    width: 100px;
+  }
+}
